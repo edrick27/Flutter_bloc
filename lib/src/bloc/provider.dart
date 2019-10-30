@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:patron_bloc/src/bloc/login_bloc.dart';
+import 'package:patron_bloc/src/bloc/productos_bloc.dart';
 
 class Provider extends InheritedWidget {
 
   static Provider _instancia;
+
+  final _loginBloc      = new LoginBloc();
+  final _productosBloc  = new ProductosBloc();
 
 // esto sirve para que validar si la instancia ya esta creada y que no cree una nuva
   factory Provider({ Key key, Widget child }){
@@ -19,13 +23,16 @@ class Provider extends InheritedWidget {
    Provider._insternal({ Key key, Widget child }) 
       : super(key: key, child: child);
 
-  final loginBloc = LoginBloc();
 
   @override
   bool updateShouldNotify( InheritedWidget oldWidget ) => true;
 
   static LoginBloc of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(Provider) as Provider).loginBloc;
+    return (context.inheritFromWidgetOfExactType(Provider) as Provider)._loginBloc;
+  }
+
+  static ProductosBloc productosBloc(BuildContext context) {
+    return (context.inheritFromWidgetOfExactType(Provider) as Provider)._productosBloc;
   }
 
  

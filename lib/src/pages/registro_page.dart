@@ -5,9 +5,9 @@ import 'package:patron_bloc/src/providers/login_provider.dart';
 import 'package:patron_bloc/src/utils/utils.dart' as Utils;
 
 
-class LoginPage extends StatelessWidget {
+class RegistroPage extends StatelessWidget {
 
-  final _loginProvider = new LoginProvider();
+  final loginProvider = new LoginProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class LoginPage extends StatelessWidget {
             ),
             child: Column(
               children: <Widget>[
-                Text("ingreso", style: TextStyle( fontSize: 20.0 )),
+                Text("Crear nueva cuenta", style: TextStyle( fontSize: 20.0 )),
                 SizedBox( height: 60.0 ),
                 _crearEmail(bloc),
                 SizedBox( height: 30.0 ),
@@ -64,8 +64,8 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           FlatButton(
-            child: Text('Crear nueva cuenta'),
-            onPressed: () => Navigator.pushReplacementNamed(context, 'registro'),
+            child: Text('Ya tienes cuenta?'),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/'),
           ),
           SizedBox( height: 100.0 )
         ],
@@ -126,9 +126,9 @@ class LoginPage extends StatelessWidget {
         return RaisedButton(
           child: Container(
             padding: EdgeInsets.symmetric( horizontal: 100.0, vertical: 20.0),
-            child: Text('Ingresar')
+            child: Text('Crear')
           ),
-          onPressed: (!snapshot.hasData) ? null : () => _login(bloc, context),
+          onPressed: (!snapshot.hasData) ? null : () => _register(bloc, context),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0)
           ),
@@ -141,21 +141,15 @@ class LoginPage extends StatelessWidget {
   }
 
 
-  _login(LoginBloc bloc, BuildContext context) async {
+  _register(LoginBloc bloc, BuildContext context) async {
 
-    print("================");
-    print("email ${bloc.email}");
-    print("================");
-    print("PassWord ${bloc.password}");
-
-    Map resp =  await _loginProvider.login(bloc.email, bloc.password);
+    Map resp = await loginProvider.nuevoUsuario(bloc.email, bloc.password);
 
     if(resp['ok']){
       Navigator.pushReplacementNamed(context,'home');
     } else {
-      print(" resp resp resp");
       print(resp);
-      Utils.mostrarAlerta(context, resp['message'] );
+      // Utils.mostrarAlerta(context, resp['message'] );
     }
   }
 
@@ -191,7 +185,7 @@ class LoginPage extends StatelessWidget {
         children: <Widget>[
           Icon(Icons.person_pin_circle, color: Colors.white, size: 100.0),
           SizedBox( height: 10.0, width: double.infinity),
-          Text("Login", style: TextStyle(color: Colors.white, fontSize: 25.0))
+          Text("Registro", style: TextStyle(color: Colors.white, fontSize: 25.0))
         ],
       ),
     );
